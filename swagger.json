@@ -1,0 +1,223 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "description": "Payment Gateway API",
+        "title": "API Documentation for Payment Gateway Service"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:5500"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "JWT": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "paths": {
+        "/payment/create-payment": {
+            "post": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "create the payment",
+                "description": "user is doing payment",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "amount": {
+                                        "type": "number"
+                                    },
+                                    "payment_method":{
+                                        "type":"string",
+                                        "enum": ["credit_card", "debit_card", "digital_wallet"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Your payment is created!"
+                    }
+                }
+            }
+        },
+        "/payment/process/{id}": {
+            "patch": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "status change",
+                "description": "User payment status will get update",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": ["completed", "failed"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "payment processed status!"
+                    },
+                    "400": {
+                        "description": "Payment not found!"
+                    }
+                }
+            }
+        },
+        "payment/getpayment/{id}": {
+            "get": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "get payment status",
+                "description": "check the payment status",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "check the payment status!"
+                    },
+                    "400": {
+                        "description": "Payment not found!"
+                    }
+                }
+            }
+        },
+        "/payment/refund/{id}": {
+            "patch": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "refund payment",
+                "description": "update the status of the payment process",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "payment refunded successfully!"
+                    },
+                    "400": {
+                        "description": "Payment not found!"
+                    }
+                }
+            }
+        },
+        "/user/create": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "SignUp",
+                "description": "Register new the User",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "cpassword": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User Registered Successfully!!"
+                    },
+                    "400": {
+                        "description": "password  does not match with confirm password!"
+                    },
+                    "401": {
+                        "description": "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 6 characters long!"
+                    },
+                    "402": {
+                        "description": "User already exist!"
+                    }
+                }
+            }
+        },
+
+        "/user/signin": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Login",
+                "description": "User login to get token",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Incorrect Credentials"
+                    }
+                }
+            }
+        }
+    }
+}
