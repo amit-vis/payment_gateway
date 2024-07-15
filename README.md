@@ -1,5 +1,4 @@
 # Payment_gateway API
-live_Link:-https://e-learning-api-qywg.onrender.com/
 
 ## Installation
 Install My Projects Using npm
